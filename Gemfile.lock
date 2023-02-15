@@ -9,6 +9,7 @@ GEM
   remote: https://rubygems.org/
   specs:
     diff-lcs (1.5.0)
+    dotenv (2.8.1)
     httparty (0.21.0)
       mini_mime (>= 1.0.0)
       multi_xml (>= 0.5.2)
@@ -35,6 +36,7 @@ PLATFORMS
 
 DEPENDENCIES
   bundler (~> 2.3.17)
+  dotenv (~> 2.8)
   rake (~> 10.0)
   rspec (~> 3.0)
   tenkit!
