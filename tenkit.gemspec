@@ -11,12 +11,13 @@ Gem::Specification.new do |s|
   s.email = 'james@superbasic.xyz'
   s.homepage = 'https://github.com/superbasicxyz/tenkit'
   s.license = 'MIT'
+  s.files = ['lib/tenkit.rb']
 
   s.add_dependency 'httparty'
   s.add_dependency 'jwt'
 
   s.add_development_dependency 'bundler', '~> 2.3.17'
+  s.add_development_dependency 'dotenv', '~> 2.8'
   s.add_development_dependency 'rake', '~> 12.3'
   s.add_development_dependency 'rspec', '~> 3.0'
-  s.add_development_dependency 'dotenv', '~> 2.8'
 end
