@@ -10,7 +10,6 @@ module Tenkit
     base_uri 'https://weatherkit.apple.com/api/v1'
 
     def initialize(config)
-      puts config
       @team_id = config[:team_id]
       @service_id = config[:service_id]
       @key_id = config[:key_id]

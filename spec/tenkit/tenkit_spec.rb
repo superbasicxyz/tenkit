@@ -12,7 +12,7 @@ RSpec.describe Tenkit do
         key: ENV['AUTH_KEY']
       }
       client = Tenkit::Client.new(tenkit_config)
-      expect(client.availability("37.323", "122.032").body).to eq("[\"currentWeather\",\"forecastDaily\",\"forecastHourly\",\"trendComparison\",\"weatherAlerts\"]")
+      expect(client.availability('37.323', '122.032').body).to eq('["currentWeather","forecastDaily","forecastHourly","trendComparison","weatherAlerts"]')
     end
   end
 
