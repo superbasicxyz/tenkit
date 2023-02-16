@@ -6,6 +6,7 @@ require 'openssl'
 module Tenkit
   class Client
     def initialize(config)
+      puts config
       @team_id = config[:team_id]
       @service_id = config[:service_id]
       @key_id = config[:key_id]
@@ -28,11 +29,11 @@ module Tenkit
       payload = {
         iss: @team_id,
         iat: Time.new.to_i,
-        exp: Time.new.to_i + 5,
+        exp: Time.new.to_i + 600,
         sub: @service_id
       }
 
-      key = OpenSSL::PKey::EC.new @key
+      key = OpenSSL::PKey.read @key
 
       JWT.encode payload, key, 'ES256', header
     end
