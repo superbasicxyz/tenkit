@@ -13,8 +13,8 @@ Gem::Specification.new do |s|
   s.license = 'MIT'
   s.files = ['lib/tenkit.rb']
 
-  s.add_dependency 'httparty'
-  s.add_dependency 'jwt'
+  s.add_dependency 'httparty', '~> 0.21.0'
+  s.add_dependency 'jwt', '~> 2.7.0'
 
   s.add_development_dependency 'bundler', '~> 2.3.17'
   s.add_development_dependency 'dotenv', '~> 2.8'
