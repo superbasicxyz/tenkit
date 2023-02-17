@@ -9,18 +9,31 @@ module Tenkit
     include HTTParty
     base_uri 'https://weatherkit.apple.com/api/v1'
 
+    DATA_SETS = {
+      current_weather: 'currentWeather',
+      forecast_daily: 'forecastDaily',
+      forecast_hourly: 'forecastHourly',
+      trend_comparison: 'trendComparison',
+      weather_alerts: 'weatherAlerts'
+    }.freeze
+
     def availability(lat, lon, country = 'US')
       get("/availability/#{lat}/#{lon}?country=#{country}")
     end
 
-    def weather(lat, lon, language = 'en')
-      get("/weather/#{language}/#{lat}/#{lon}?dataSets=currentWeather")
+    def weather(lat, lon, language = 'en', data_sets = [:current_weather])
+      path_root = "/weather/#{language}/#{lat}/#{lon}?dataSets="
+      path = path_root + data_sets.map { |ds| DATA_SETS[ds] }.compact.join(',')
+
+      response = get(path)
+
+      current_weather = JSON.parse(response.body)['currentWeather']
+      Weather.new(current_weather)
     end
 
     private
 
     def get(url)
-      puts token
       headers = { Authorization: "Bearer #{token}" }
       self.class.get(url, { headers: headers })
     end

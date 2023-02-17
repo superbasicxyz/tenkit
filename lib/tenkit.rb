@@ -2,9 +2,12 @@
 
 require_relative 'tenkit/client'
 require_relative 'tenkit/config'
+require_relative 'tenkit/version'
+require_relative 'tenkit/weather'
 
 module Tenkit
-  class Error < StandardError; end
+  class Error < StandardError
+  end
 
   class << self
     attr_accessor :config
