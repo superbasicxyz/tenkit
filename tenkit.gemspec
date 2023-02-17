@@ -1,11 +1,12 @@
 # frozen_string_literal: true
 
+$LOAD_PATH.push File.expand_path('lib', __dir__)
 require 'tenkit/version'
 
 Gem::Specification.new do |s|
   s.platform = Gem::Platform::RUBY
   s.name = 'tenkit'
-  s.version = Tenkit::VERSION::STRING
+  s.version = Tenkit::VERSION
   s.required_ruby_version = '>= 2.6.7'
   s.summary = 'Wrapper for WeatherKit API'
   s.description = 'Wrapper for Weatherkit API'
