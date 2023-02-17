@@ -15,14 +15,14 @@ gem 'tenkit'
 ## Usage
 
 ```ruby
-config = {
-  team_id: "APPLE DEVELOPER TEAM ID",
-  service_id: "APPLE DEVELOPER SERVICE ID",
-  key_id: "APPLE DEVELOPER KEY ID",
-  key: "APPLE DEVELOPER PRIVATE KEY"
-}
+Tenkit.configure do |c|
+  c.team_id = "APPLE DEVELOPER TEAM ID"
+  c.service_id = "APPLE DEVELOPER SERVICE ID"
+  c.key_id = "APPLE DEVELOPER KEY ID"
+  c.key =  "APPLE DEVELOPER PRIVATE KEY"
+end
 
-client = Tenkit::Client.new(config)
+client = Tenkit::Client.new
 
 lat = '37.323'
 lon = '122.032'

@@ -2,8 +2,8 @@ PATH
   remote: .
   specs:
     tenkit (0.0.1)
-      httparty
-      jwt
+      httparty (~> 0.21.0)
+      jwt (~> 2.7.0)
 
 GEM
   remote: https://rubygems.org/
