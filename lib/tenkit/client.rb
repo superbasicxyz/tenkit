@@ -27,8 +27,7 @@ module Tenkit
 
       response = get(path)
 
-      current_weather = JSON.parse(response.body)['currentWeather']
-      Weather.new(current_weather)
+      Weather.new(response)
     end
 
     def weather_alert(id, language = 'en')
