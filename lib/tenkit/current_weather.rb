@@ -1,3 +1,5 @@
+require_relative './metadata'
+
 module Tenkit
   class CurrentWeather
     attr_reader :as_of,
@@ -5,6 +7,7 @@ module Tenkit
                 :condition_code,
                 :daylight,
                 :humidity,
+                :metadata,
                 :precipitation_intensity,
                 :pressure,
                 :pressure_trend,
@@ -25,6 +28,7 @@ module Tenkit
       @condition_code = current_weather['conditionCode']
       @daylight = current_weather['daylight']
       @humidity = current_weather['humidity']
+      @metadata = Metadata.new(current_weather['metadata'])
       @precipitation_intensity = current_weather['precipitationIntensity']
       @pressure = current_weather['pressure']
       @pressure_trend = current_weather['pressureTrend']
