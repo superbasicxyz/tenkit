@@ -3,6 +3,7 @@
 require 'jwt'
 require 'openssl'
 require 'httparty'
+require_relative './weather_response'
 
 module Tenkit
   class Client
@@ -26,8 +27,7 @@ module Tenkit
       path = path_root + data_sets.map { |ds| DATA_SETS[ds] }.compact.join(',')
 
       response = get(path)
-
-      Weather.new(response)
+      WeatherResponse.new(response)
     end
 
     def weather_alert(id, language = 'en')

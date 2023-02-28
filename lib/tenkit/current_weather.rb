@@ -18,6 +18,8 @@ module Tenkit
                 :wind_speed
 
     def initialize(current_weather)
+      return if current_weather.nil?
+
       @as_of = current_weather['asOf']
       @cloud_cover = current_weather['cloudCover']
       @condition_code = current_weather['conditionCode']
