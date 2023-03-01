@@ -1,8 +1,10 @@
-# Tenkit
+# Tenkit 天気ト
 
 A wrapper for Apple's WeatherKit API in Ruby
 
-Maintained by: [Super Basic](https://superbasic.xyz)
+A portmanteau of "tenki" the Japanese word for weather, and "kit", the end of WeatherKit.
+
+This project is in beta, some of its API may be unstable, or possibly non-functional (like WeatherKit itself).
 
 ## Installation
 
@@ -29,3 +31,5 @@ lon = '122.032'
 
 client.weather(lat, lon)
 ```
+
+Maintained by: **[Super Basic](https://superbasic.xyz)**
