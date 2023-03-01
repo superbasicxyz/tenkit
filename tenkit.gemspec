@@ -14,7 +14,7 @@ Gem::Specification.new do |s|
   s.email = 'james@superbasic.xyz'
   s.homepage = 'https://github.com/superbasicxyz/tenkit'
   s.license = 'MIT'
-  s.files = ['lib/tenkit.rb']
+  s.files = Dir['lib/tenkit.rb', 'lib/**/*.rb']
 
   s.add_dependency 'httparty', '~> 0.21.0'
   s.add_dependency 'jwt', '~> 2.7.0'
