@@ -4,7 +4,7 @@ A wrapper for Apple's WeatherKit API in Ruby
 
 A portmanteau of "tenki" the Japanese word for weather, and "kit", the end of WeatherKit.
 
-This project is in beta, some of its API may be unstable, or possibly non-functional (like WeatherKit itself).
+This project is in beta, some of its API may be unstable, or possibly non-functional (like WeatherKit itself). We recommend pinning the version in your Gemfile until we get to a stable release, at which point we will be using [Semantic Versioning](https://semver.org/).
 
 ## Installation
 
