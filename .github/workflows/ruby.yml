@@ -33,5 +33,6 @@ jobs:
         KID: ${{ secrets.KID }}
         SID: ${{ secrets.SID }}
         TID: ${{ secrets.TID }}
-        AUTH_KEY: "${{ secrets.AUTH_KEY }}"
+        AUTH_KEY: |
+          ${{ secrets.AUTH_KEY }}
       run: bundle exec rake
