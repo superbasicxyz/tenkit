@@ -12,7 +12,7 @@ RSpec.describe Tenkit do
     it 'returns weather data for the specified location' do
       client = Tenkit::Client.new
 
-      weather_response = client.weather('37.323', '122.032',{ data_sets: [:current_weather, :forecast_daily, :forecast_hourly, :trend_comparison, :weather_alerts] })
+      weather_response = client.weather('37.323', '122.032', data_sets: [:current_weather, :forecast_daily, :forecast_hourly, :trend_comparison, :weather_alerts])
       expect(weather_response).to be_a(Tenkit::WeatherResponse)
       expect(weather_response.raw).to be_a(HTTParty::Response)
       expect(weather_response.weather).to be_a(Tenkit::Weather)
