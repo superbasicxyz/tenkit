@@ -19,24 +19,18 @@ module Tenkit
       forecast_next_hour: 'forecastNextHour'
     }.freeze
 
-    def availability(lat, lon, **options)
-      options[:country] ||= 'US'
-      get("/availability/#{lat}/#{lon}?country=#{options[:country]}")
+    def availability(lat, lon, country: 'US')
+      get("/availability/#{lat}/#{lon}?country=#{country}")
     end
 
-    def weather(lat, lon, **options)
-      options[:data_sets] ||= [:current_weather]
-      options[:language] ||= 'en'
-
-      path_root = "/weather/#{options[:language]}/#{lat}/#{lon}?dataSets="
-      path = path_root + options[:data_sets].map { |ds| DATA_SETS[ds] }.compact.join(',')
-
+    def weather(lat, lon, data_sets: [:current_weather], language: 'en')
+      path_root = "/weather/#{language}/#{lat}/#{lon}?dataSets="
+      path = path_root + data_sets.map { |ds| DATA_SETS[ds] }.compact.join(',')
       response = get(path)
       WeatherResponse.new(response)
     end
 
-    def weather_alert(id, **options)
-      options[:language] ||= 'en'
+    def weather_alert(id, language: 'en')
       puts 'TODO: implement weather alert endpoint'
       puts language
       puts id
