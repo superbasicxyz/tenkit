@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    tenkit (0.0.4)
+    tenkit (0.0.5)
       httparty (~> 0.21.0)
       jwt (~> 2.7.0)
 
