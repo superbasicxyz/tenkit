@@ -31,6 +31,7 @@ module Tenkit
     end
 
     def weather_alert(id, language: 'en')
+      puts token
       puts 'TODO: implement weather alert endpoint'
       puts language
       puts id
