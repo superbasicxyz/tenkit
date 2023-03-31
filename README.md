@@ -14,6 +14,10 @@ Add to `Gemfile`
 gem 'tenkit'
 ```
 
+See Apple's instructions on how to [Get Started with Weatherkit](https://developer.apple.com/weatherkit/get-started/). Your WeatherKit API dashboard should be at this URL <https://developer.apple.com/account/resources/services/weatherkit>.
+
+
+
 ## Usage
 
 ```ruby
