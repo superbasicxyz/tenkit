@@ -1,5 +1,8 @@
 # Tenkit 天気ト
 
+![Gem](https://img.shields.io/gem/v/tenkit)
+![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/superbasicxyz/tenkit/ruby.yml)
+
 A wrapper for Apple's WeatherKit API in Ruby
 
 A portmanteau of "tenki" the Japanese word for weather, and "kit", the end of WeatherKit.
