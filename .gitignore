@@ -1,3 +1,4 @@
 .env
 AuthKey_*
 *.gem
+.tool-versions

@@ -36,4 +36,7 @@ lon = '122.032'
 client.weather(lat, lon)
 ```
 
+
+## About
+
 Maintained by: **[Super Basic](https://superbasic.xyz)**
