@@ -1,4 +1,6 @@
 require_relative '../../lib/tenkit'
+
+require 'webmock/rspec'
 require 'dotenv'
 Dotenv.load
 
