@@ -54,7 +54,7 @@ This is your Apple Team ID, taken from the top-right of your [developer account 
 ![screenshot example of where to find your team ID](doc/team_id-crunch.png)
 
 ### APPLE_DEVELOPER_SERVICE_ID
-This is a Service ID that you’ll need to create: https://developer.apple.com/account/resources/identifiers/list/serviceId It will be in the same style as an App ID, as a reverse domain name, e.g. “uk.co.cowlibob.fancypantsweather”
+This is a Service ID that you’ll need to create: https://developer.apple.com/account/resources/identifiers/list/serviceId It will be in the same style as an App ID, as a reverse domain name, e.g. “com.example.fancypantsweather”
 
 ### APPLE_DEVELOPER_KEY_ID
 Generate a new key: https://developer.apple.com/account/resources/authkeys/add Give it a name (not important but descriptive to you) and make sure to check “WeatherKit”
