@@ -19,6 +19,10 @@ module Tenkit
       forecast_next_hour: 'forecastNextHour'
     }.freeze
 
+    def initialize
+      Tenkit.config.validate!
+    end
+
     def availability(lat, lon, country: 'US')
       get("/availability/#{lat}/#{lon}?country=#{country}")
     end

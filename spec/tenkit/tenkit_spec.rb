@@ -2,6 +2,13 @@ require_relative './spec_helper'
 require_relative './mock/weather'
 
 RSpec.describe Tenkit do
+  describe '#initialize' do
+    it 'raises a TenkitError if not configured fully' do
+      Tenkit.config.team_id = nil
+      expect { Tenkit::Client.new }.to raise_error Tenkit::TenkitError
+      Tenkit.config.team_id = ENV.fetch('TID')
+    end
+  end
   describe '#availability' do
     it 'returns the data sets available for specified location' do
       stub_request(:get, "https://weatherkit.apple.com/api/v1/availability/37.323/122.032?country=US").with(
