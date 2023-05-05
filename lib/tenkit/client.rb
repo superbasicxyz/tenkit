@@ -4,6 +4,7 @@ require 'jwt'
 require 'openssl'
 require 'httparty'
 require_relative './weather_response'
+require_relative './weather_alert_response'
 
 module Tenkit
   class Client
@@ -35,9 +36,9 @@ module Tenkit
     end
 
     def weather_alert(id, language: 'en')
-      puts 'TODO: implement weather alert endpoint'
-      puts language
-      puts id
+      path = "/weatherAlert/#{language}/#{id}"
+      response = get(path)
+      WeatherAlertResponse.new(response)
     end
 
     private

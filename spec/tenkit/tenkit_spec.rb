@@ -46,4 +46,24 @@ RSpec.describe Tenkit do
       expect(weather_response.weather.weather_alerts).to be_a(Tenkit::WeatherAlertCollection)
     end
   end
+
+  describe '#weather_alert' do
+    it 'returns weather alert data for alert with id' do
+      fake_alert_id = '0828b382-f63c-4139-9f4f-91a05a4c7cdd'
+
+      stub_request(:get, "https://weatherkit.apple.com/api/v1/weatherAlert/en/#{fake_alert_id}").with(
+        headers: {
+          'Accept'=>'*/*',
+          'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
+          'Authorization'=> /Bearer /,
+          'User-Agent'=>'Ruby'
+        }).to_return(status: 200, body: TenkitMocks::WeatherAlert.alert, headers: {})
+
+      client = Tenkit::Client.new
+
+      weather_alert_response = client.weather_alert(fake_alert_id)
+      expect(weather_alert_response).to be_a(Tenkit::WeatherAlertResponse)
+      expect(weather_alert_response.raw).to be_a(HTTParty::Response)
+    end
+  end
 end

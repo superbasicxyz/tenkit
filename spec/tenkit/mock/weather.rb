@@ -6354,5 +6354,10 @@ module TenkitMocks
       }'
     end
   end
+  module WeatherAlert
+    def self.alert
+      '["currentWeather","forecastDaily","forecastHourly","trendComparison","weatherAlerts"]'
+    end
+  end
 end
 
