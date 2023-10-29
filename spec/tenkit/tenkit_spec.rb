@@ -25,7 +25,7 @@ RSpec.describe Tenkit do
 
   describe '#weather' do
     it 'returns weather data for the specified location' do
-      stub_request(:get, "https://weatherkit.apple.com/api/v1/weather/en/37.323/122.032?dataSets=currentWeather,forecastDaily,forecastHourly,trendComparison,weatherAlerts").with(
+      stub_request(:get, "https://weatherkit.apple.com/api/v1/weather/en/37.323/122.032?dataSets=currentWeather,forecastDaily,forecastHourly,trendComparison,weatherAlerts?country=US").with(
         headers: {
           'Accept'=>'*/*',
           'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
