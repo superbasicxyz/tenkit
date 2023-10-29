@@ -27,17 +27,20 @@ module Tenkit
       get("/availability/#{lat}/#{lon}?country=#{country}")
     end
 
-    def weather(lat, lon, data_sets: [:current_weather], language: 'en')
+    def weather(lat, lon, data_sets: [:current_weather], language: 'en', country: 'US')
       path_root = "/weather/#{language}/#{lat}/#{lon}?dataSets="
       path = path_root + data_sets.map { |ds| DATA_SETS[ds] }.compact.join(',')
+      path = path + "&country=#{country}"
+
       response = get(path)
       WeatherResponse.new(response)
     end
 
     def weather_alert(id, language: 'en')
-      puts 'TODO: implement weather alert endpoint'
-      puts language
-      puts id
+      path = "/weatherAlert/#{language}/#{id}"
+
+      response = get(path)
+      WeatherResponse.new(response)
     end
 
     private
