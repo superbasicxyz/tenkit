@@ -64,6 +64,8 @@ RSpec.describe Tenkit do
       weather_alert_response = client.weather_alert(fake_alert_id)
       expect(weather_alert_response).to be_a(Tenkit::WeatherAlertResponse)
       expect(weather_alert_response.raw).to be_a(HTTParty::Response)
+      expect(weather_alert_response.weather_alert).to be_a(Tenkit::WeatherAlert)
+      expect(weather_alert_response.weather_alert.summary).to be_a(Tenkit::WeatherAlertSummary)
     end
   end
 end
