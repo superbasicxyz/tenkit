@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require_relative 'tenkit/conditions'
 require_relative 'tenkit/client'
 require_relative 'tenkit/config'
 require_relative 'tenkit/version'
@@ -14,5 +15,16 @@ module Tenkit
   def self.configure
     self.config ||= Config.new
     yield config
+  end
+end
+
+class String
+  def to_underscore!
+    gsub!(/(.)([A-Z])/, '\1_\2')
+    downcase!
+  end
+
+  def to_underscore
+    dup.tap { |s| s.to_underscore! }
   end
 end
