@@ -1,46 +1,44 @@
-require_relative "spec_helper"
-require_relative "mock/weather"
-
+require_relative './spec_helper'
+require_relative './mock/weather'
 
 RSpec.describe Tenkit do
+  let(:api_url) { "https://weatherkit.apple.com/api/v1"  }
   let(:data_sets) { Tenkit::Client::DATA_SETS }
 
-  describe "#initialize" do
-    it "raises a TenkitError if not configured fully" do
+  subject { Tenkit::Client.new }
+
+  describe '#initialize' do
+    it 'raises a TenkitError if not configured fully' do
       Tenkit.config.team_id = nil
       expect { Tenkit::Client.new }.to raise_error Tenkit::TenkitError
-      Tenkit.config.team_id = ENV.fetch("TID")
-    end
-  end
-  describe "#availability" do
-    it "returns the data sets available for specified location" do
-      stub_request(:get, "https://weatherkit.apple.com/api/v1/availability/37.323/122.032?country=US").with(
-        headers: {
-          "Accept" => "*/*",
-          "Accept-Encoding" => "gzip;q=1.0,deflate;q=0.6,identity;q=0.3",
-          "Authorization" => /Bearer /,
-          "User-Agent" => "Ruby"
-        }
-      ).to_return(status: 200, body: TenkitMocks::Availability.all_data_sets, headers: {})
-      client = Tenkit::Client.new
-      expect(client.availability("37.323", "122.032").body).to eq(data_sets.values[0..-2].to_s.delete(" "))
+      Tenkit.config.team_id = ENV.fetch('TID')
     end
   end
 
-  describe "#weather" do
-    it "returns weather data for the specified location" do
-      stub_request(:get, "https://weatherkit.apple.com/api/v1/weather/en/37.323/122.032?dataSets=#{data_sets.values.join(",")}").with(
+  describe '#availability' do
+    it 'returns the data sets available for specified location' do
+      stub_request(:get, "#{api_url}/availability/37.323/122.032?country=US").with(
         headers: {
-          "Accept" => "*/*",
-          "Accept-Encoding" => "gzip;q=1.0,deflate;q=0.6,identity;q=0.3",
-          "Authorization" => /Bearer /,
-          "User-Agent" => "Ruby"
-        }
-      ).to_return(status: 200, body: TenkitMocks::Weather.all_data_sets, headers: {})
+          'Accept'=>'*/*',
+          'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
+          'Authorization'=> /Bearer /,
+          'User-Agent'=>'Ruby'
+        }).to_return(status: 200, body: TenkitMocks::Availability.all_data_sets, headers: {})
+      expect(subject.availability('37.323', '122.032').body).to  eq(data_sets.values[0..-2].to_s.delete(" "))
+    end
+  end
 
-      client = Tenkit::Client.new
+  describe '#weather' do
+    it 'returns weather data for the specified location' do
+      stub_request(:get, "#{api_url}/weather/en/37.323/122.032?dataSets=#{data_sets.values.join(",")}").with(
+        headers: {
+          'Accept'=>'*/*',
+          'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
+          'Authorization'=> /Bearer /,
+          'User-Agent'=>'Ruby'
+        }).to_return(status: 200, body: TenkitMocks::Weather.all_data_sets, headers: {})
 
-      weather_response = client.weather("37.323", "122.032", data_sets: data_sets.keys.map { |s| s.to_sym })
+      weather_response = subject.weather('37.323', '122.032', data_sets: data_sets.keys.map { |s| s.to_sym })
       expect(weather_response).to be_a(Tenkit::WeatherResponse)
       expect(weather_response.raw).to be_a(HTTParty::Response)
       expect(weather_response.weather).to be_a(Tenkit::Weather)
