@@ -1,5 +1,3 @@
-require_relative './daily_forecast'
-require_relative './hourly_forecast'
 require_relative './next_hour_forecast'
 require_relative './weather_alert_collection'
 

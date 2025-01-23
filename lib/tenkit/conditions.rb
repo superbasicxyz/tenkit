@@ -6,7 +6,13 @@ module Tenkit
       conditions.each do |key, val|
         name = key.gsub(/(.)([A-Z])/, '\1_\2').downcase # underscore
         singleton_class.class_eval { attr_accessor name }
-        if val.is_a?(Hash)
+        if val.is_a?(Array)
+          val = if key == "days"
+            val.map { |e| DayWeatherConditions.new(e) }
+          elsif key == "hours"
+            val.map { |e| HourWeatherConditions.new(e) }
+          end
+        elsif val.is_a?(Hash)
           val = if key == "metadata"
             Metadata.new(val)
           elsif key == "daytimeForecast"
@@ -25,6 +31,10 @@ module Tenkit
   end
 
   class CurrentWeather < Conditions; end
+
+  class HourlyForecast < Conditions; end
+
+  class DailyForecast < Conditions; end
 
   class HourWeatherConditions < Conditions; end
 
