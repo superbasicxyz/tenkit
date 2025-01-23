@@ -1,5 +1,3 @@
-require_relative './day_weather_conditions'
-
 module Tenkit
   class DailyForecast
     attr_reader :days, :learn_more_url

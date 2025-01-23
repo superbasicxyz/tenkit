@@ -1,5 +1,3 @@
-require_relative "hour_weather_conditions"
-
 module Tenkit
   class HourlyForecast
     attr_reader :hours

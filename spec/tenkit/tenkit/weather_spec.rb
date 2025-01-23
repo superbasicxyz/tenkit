@@ -13,6 +13,13 @@ RSpec.describe Tenkit::Weather do
 
   describe "currentWeather" do
     let(:data_set) { "currentWeather" }
+
+    it "returns correct object types" do
+      cw = subject.weather.current_weather
+      expect(cw).to be_a Tenkit::CurrentWeather
+      expect(cw.metadata).to be_a Tenkit::Metadata
+    end
+
     it "returns current weather data" do
       cw = subject.weather.current_weather
       expect(cw.metadata.latitude).to be 37.32
@@ -24,14 +31,22 @@ RSpec.describe Tenkit::Weather do
 
   describe "forecastDaily" do
     let(:data_set) { "forecastDaily" }
+    let(:forecast) { subject.weather.forecast_daily }
+    let(:first_day) { forecast.days.first }
 
     it "returns 10 days of data" do
-      days = subject.weather.forecast_daily.days
-      expect(days.size).to be 10
+      expect(forecast.days.size).to be 10
+    end
+
+    it "returns correct object types" do
+      expect(forecast).to be_a Tenkit::DailyForecast
+      expect(first_day).to be_a Tenkit::DayWeatherConditions
+      expect(first_day.daytime_forecast).to be_a Tenkit::DaytimeForecast
+      expect(first_day.overnight_forecast).to be_a Tenkit::OvernightForecast
+      expect(first_day.rest_of_day_forecast).to be_a Tenkit::RestOfDayForecast
     end
 
     it "returns daily forecast data" do
-      first_day = subject.weather.forecast_daily.days.first
       expect(first_day.condition_code).to eq "Clear"
       expect(first_day.max_uv_index).to be 2
       expect(first_day.temperature_max).to be 6.34
@@ -49,14 +64,19 @@ RSpec.describe Tenkit::Weather do
 
   describe "forecastHourly" do
     let(:data_set) { "forecastHourly" }
+    let(:forecast) { subject.weather.forecast_hourly }
+    let(:first_hour) { forecast.hours.first }
 
     it "returns 25 hours of data" do
-      days = subject.weather.forecast_hourly.hours
-      expect(days.size).to be 25
+      expect(forecast.hours.size).to be 25
+    end
+
+    it "returns correct object types" do
+      expect(forecast).to be_a Tenkit::HourlyForecast
+      expect(first_hour).to be_a Tenkit::HourWeatherConditions
     end
 
     it "returns hourly forecast data" do
-      first_hour = subject.weather.forecast_hourly.hours.first
       expect(first_hour.condition_code).to eq "MostlyClear"
       expect(first_hour.temperature).to be(-5.86)
     end

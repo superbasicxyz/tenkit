@@ -1,4 +1,3 @@
-require_relative './current_weather'
 require_relative './daily_forecast'
 require_relative './hourly_forecast'
 require_relative './next_hour_forecast'
