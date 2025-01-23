@@ -14,7 +14,6 @@ GEM
       rexml
     diff-lcs (1.5.0)
     dotenv (2.8.1)
-    fast_underscore (0.3.4)
     hashdiff (1.0.1)
     httparty (0.21.0)
       mini_mime (>= 1.0.0)
@@ -52,7 +51,6 @@ PLATFORMS
 DEPENDENCIES
   bundler (~> 2.4.22)
   dotenv (~> 2.8)
-  fast_underscore
   rake (~> 12.3)
   rspec (~> 3.0)
   tenkit!
