@@ -12,18 +12,31 @@ RSpec.describe Tenkit::Weather do
   subject { client.weather(lat, lon) }
 
   describe "currentWeather" do
+    let(:cw) { subject.weather.current_weather }
     let(:data_set) { "currentWeather" }
 
+    context "with unknown types" do
+      let(:data_set) { "unknownTypes" }
+
+      it "returns fallback object types" do
+        expect(cw.sub_array.first).to be_a Tenkit::Conditions
+        expect(cw.sub_hash).to be_a Tenkit::Conditions
+      end
+    end
+
+    it "includes expected metadata" do
+      expect(cw.name).to eq "CurrentWeather"
+      expect(cw.metadata.attribution_url).to start_with 'https://'
+      expect(cw.metadata.latitude).to be 37.32
+      expect(cw.metadata.longitude).to be 122.03
+    end
+
     it "returns correct object types" do
-      cw = subject.weather.current_weather
       expect(cw).to be_a Tenkit::CurrentWeather
       expect(cw.metadata).to be_a Tenkit::Metadata
     end
 
     it "returns current weather data" do
-      cw = subject.weather.current_weather
-      expect(cw.metadata.latitude).to be 37.32
-      expect(cw.metadata.longitude).to be 122.03
       expect(cw.temperature).to be(-5.68)
       expect(cw.temperature_apparent).to be(-6.88)
     end
@@ -44,6 +57,17 @@ RSpec.describe Tenkit::Weather do
       expect(first_day.daytime_forecast).to be_a Tenkit::DaytimeForecast
       expect(first_day.overnight_forecast).to be_a Tenkit::OvernightForecast
       expect(first_day.rest_of_day_forecast).to be_a Tenkit::RestOfDayForecast
+    end
+
+    it "excludes learn_more_url node" do
+      expect(forecast.respond_to? :learn_more_url).to be false
+    end
+
+    it "includes expected metadata" do
+      expect(forecast.name).to eq "DailyForecast"
+      expect(forecast.metadata.attribution_url).to start_with 'https://'
+      expect(forecast.metadata.latitude).to be 37.32
+      expect(forecast.metadata.longitude).to be 122.03
     end
 
     it "returns daily forecast data" do
@@ -69,6 +93,13 @@ RSpec.describe Tenkit::Weather do
 
     it "returns 25 hours of data" do
       expect(forecast.hours.size).to be 25
+    end
+
+    it "includes expected metadata" do
+      expect(forecast.name).to eq "HourlyForecast"
+      expect(forecast.metadata.attribution_url).to start_with 'https://'
+      expect(forecast.metadata.latitude).to be 37.32
+      expect(forecast.metadata.longitude).to be 122.03
     end
 
     it "returns correct object types" do

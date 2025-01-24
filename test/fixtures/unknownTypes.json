@@ -1,0 +1,20 @@
+{
+  "currentWeather": {
+    "name": "CurrentWeather",
+    "subHash": {
+      "latitude": 37.32,
+      "longitude": 122.03
+    },
+    "subArray": [
+      {
+        "temperature": 6.34
+      },
+      {
+        "temperature": 5.36
+      },
+      {
+        "temperature": 1.29
+      }
+    ]
+  }
+}
