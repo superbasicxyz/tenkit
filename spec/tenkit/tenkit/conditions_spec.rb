@@ -1,14 +1,17 @@
 require_relative "../spec_helper"
 RSpec.describe Tenkit::Conditions do
-  let(:payload) { {"topKey" => {"midKey" => {"subKey" => "val"}}} }
+  let(:sample) { {"Key" => "val"} }
+  let(:payload) { {"main" => {"someArray" => [sample], "someHash" => sample}} }
 
   subject { Tenkit::Conditions.new payload }
 
   describe ".new" do
     it "creates an object with converted attributes" do
-      expect(subject.top_key).to be_a Tenkit::Conditions
-      expect(subject.top_key.mid_key).to be_a Tenkit::Conditions
-      expect(subject.top_key.mid_key.sub_key).to eq "val"
+      expect(subject.main).to be_a Tenkit::Conditions
+      expect(subject.main.some_array.first).to be_a Tenkit::Conditions
+      expect(subject.main.some_array.first.key).to eq "val"
+      expect(subject.main.some_hash).to be_a Tenkit::Conditions
+      expect(subject.main.some_hash.key).to eq "val"
     end
   end
 

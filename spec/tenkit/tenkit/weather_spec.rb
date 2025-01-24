@@ -15,15 +15,6 @@ RSpec.describe Tenkit::Weather do
     let(:cw) { subject.weather.current_weather }
     let(:data_set) { "currentWeather" }
 
-    context "with unknown types" do
-      let(:data_set) { "unknownTypes" }
-
-      it "returns fallback object types" do
-        expect(cw.sub_array.first).to be_a Tenkit::Conditions
-        expect(cw.sub_hash).to be_a Tenkit::Conditions
-      end
-    end
-
     it "includes expected metadata" do
       expect(cw.name).to eq "CurrentWeather"
       expect(cw.metadata.attribution_url).to start_with 'https://'

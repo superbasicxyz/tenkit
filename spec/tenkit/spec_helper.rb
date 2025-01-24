@@ -10,3 +10,4 @@ Tenkit.configure do |c|
   c.key_id = ENV.fetch('KID')
   c.key = ENV.fetch('AUTH_KEY')
 end
+
