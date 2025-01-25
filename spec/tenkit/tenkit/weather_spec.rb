@@ -9,41 +9,41 @@ RSpec.describe Tenkit::Weather do
 
   before { allow(client).to receive(:get).and_return(api_response) }
 
-  subject { client.weather(lat, lon) }
-
   describe "currentWeather" do
-    let(:cw) { subject.weather.current_weather }
     let(:data_set) { "currentWeather" }
 
+    subject { client.weather(lat, lon).weather.current_weather }
+
     it "includes expected metadata" do
-      expect(cw.name).to eq "CurrentWeather"
-      expect(cw.metadata.attribution_url).to start_with 'https://'
-      expect(cw.metadata.latitude).to be 37.32
-      expect(cw.metadata.longitude).to be 122.03
+      expect(subject.name).to eq "CurrentWeather"
+      expect(subject.metadata.attribution_url).to start_with 'https://'
+      expect(subject.metadata.latitude).to be 37.32
+      expect(subject.metadata.longitude).to be 122.03
     end
 
     it "returns correct object types" do
-      expect(cw).to be_a Tenkit::CurrentWeather
-      expect(cw.metadata).to be_a Tenkit::Metadata
+      expect(subject).to be_a Tenkit::CurrentWeather
+      expect(subject.metadata).to be_a Tenkit::Metadata
     end
 
     it "returns current weather data" do
-      expect(cw.temperature).to be(-5.68)
-      expect(cw.temperature_apparent).to be(-6.88)
+      expect(subject.temperature).to be(-5.68)
+      expect(subject.temperature_apparent).to be(-6.88)
     end
   end
 
   describe "forecastDaily" do
     let(:data_set) { "forecastDaily" }
-    let(:forecast) { subject.weather.forecast_daily }
-    let(:first_day) { forecast.days.first }
+    let(:first_day) { subject.days.first }
+
+    subject { client.weather(lat, lon).weather.forecast_daily }
 
     it "returns 10 days of data" do
-      expect(forecast.days.size).to be 10
+      expect(subject.days.size).to be 10
     end
 
     it "returns correct object types" do
-      expect(forecast).to be_a Tenkit::DailyForecast
+      expect(subject).to be_a Tenkit::DailyForecast
       expect(first_day).to be_a Tenkit::DayWeatherConditions
       expect(first_day.daytime_forecast).to be_a Tenkit::DaytimeForecast
       expect(first_day.overnight_forecast).to be_a Tenkit::OvernightForecast
@@ -51,14 +51,14 @@ RSpec.describe Tenkit::Weather do
     end
 
     it "excludes learn_more_url node" do
-      expect(forecast.respond_to? :learn_more_url).to be false
+      expect(subject.respond_to? :learn_more_url).to be false
     end
 
     it "includes expected metadata" do
-      expect(forecast.name).to eq "DailyForecast"
-      expect(forecast.metadata.attribution_url).to start_with 'https://'
-      expect(forecast.metadata.latitude).to be 37.32
-      expect(forecast.metadata.longitude).to be 122.03
+      expect(subject.name).to eq "DailyForecast"
+      expect(subject.metadata.attribution_url).to start_with 'https://'
+      expect(subject.metadata.latitude).to be 37.32
+      expect(subject.metadata.longitude).to be 122.03
     end
 
     it "returns daily forecast data" do
@@ -69,7 +69,6 @@ RSpec.describe Tenkit::Weather do
     end
 
     it "returns daytime and overnight forecast data" do
-      first_day = subject.weather.forecast_daily.days.first
       expect(first_day.daytime_forecast.condition_code).to eq "Clear"
       expect(first_day.daytime_forecast.temperature_max).to be 6.34
       expect(first_day.overnight_forecast.condition_code).to eq "Clear"
@@ -79,22 +78,23 @@ RSpec.describe Tenkit::Weather do
 
   describe "forecastHourly" do
     let(:data_set) { "forecastHourly" }
-    let(:forecast) { subject.weather.forecast_hourly }
-    let(:first_hour) { forecast.hours.first }
+    let(:first_hour) { subject.hours.first }
+
+    subject { client.weather(lat, lon).weather.forecast_hourly }
 
     it "returns 25 hours of data" do
-      expect(forecast.hours.size).to be 25
+      expect(subject.hours.size).to be 25
     end
 
     it "includes expected metadata" do
-      expect(forecast.name).to eq "HourlyForecast"
-      expect(forecast.metadata.attribution_url).to start_with 'https://'
-      expect(forecast.metadata.latitude).to be 37.32
-      expect(forecast.metadata.longitude).to be 122.03
+      expect(subject.name).to eq "HourlyForecast"
+      expect(subject.metadata.attribution_url).to start_with 'https://'
+      expect(subject.metadata.latitude).to be 37.32
+      expect(subject.metadata.longitude).to be 122.03
     end
 
     it "returns correct object types" do
-      expect(forecast).to be_a Tenkit::HourlyForecast
+      expect(subject).to be_a Tenkit::HourlyForecast
       expect(first_hour).to be_a Tenkit::HourWeatherConditions
     end
 

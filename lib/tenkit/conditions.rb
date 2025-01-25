@@ -1,10 +1,12 @@
+require_relative "utils"
+
 module Tenkit
   class Conditions
     def initialize(conditions)
       return if conditions.nil?
 
       conditions.each do |key, val|
-        name = snake(key)
+        name = Tenkit::Utils.snake(key)
         singleton_class.class_eval { attr_accessor name }
         if val.is_a?(Array)
           val = if key == "days"
@@ -29,11 +31,6 @@ module Tenkit
         end
         instance_variable_set(:"@#{name}", val)
       end
-    end
-
-    def snake(str)
-      return str.underscore if str.respond_to? :underscore
-      str.gsub(/(.)([A-Z])/, '\1_\2').sub(/_UR_L$/, "_URL").downcase
     end
   end
 
