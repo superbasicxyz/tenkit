@@ -14,7 +14,7 @@ module Tenkit
           elsif key == "hours"
             val.map { |e| HourWeatherConditions.new(e) }
           else
-            val.map { |e| Conditions.new(e) } # just in case
+            val.map { |e| Conditions.new(e) }
           end
         elsif val.is_a?(Hash)
           val = if key == "metadata"
@@ -34,21 +34,13 @@ module Tenkit
     end
   end
 
-  class CurrentWeather < Conditions; end
-
-  class HourlyForecast < Conditions; end
-
-  class DailyForecast < Conditions; end
-
-  class HourWeatherConditions < Conditions; end
-
-  class DayWeatherConditions < Conditions; end
-
-  class Metadata < Conditions; end
-
-  class DaytimeForecast < Conditions; end
-
-  class OvernightForecast < Conditions; end
-
-  class RestOfDayForecast < Conditions; end
+  CurrentWeather = Conditions
+  HourlyForecast = Conditions
+  DailyForecast = Conditions
+  HourWeatherConditions = Conditions
+  DayWeatherConditions = Conditions
+  Metadata = Conditions
+  DaytimeForecast = Conditions
+  OvernightForecast = Conditions
+  RestOfDayForecast = Conditions
 end
