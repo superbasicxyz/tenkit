@@ -24,7 +24,7 @@ RSpec.describe Tenkit do
           'Authorization'=> /Bearer /,
           'User-Agent'=>'Ruby'
         }).to_return(status: 200, body: TenkitMocks::Availability.all_data_sets, headers: {})
-      expect(subject.availability('37.323', '122.032').body).to  eq(data_sets.values[0..-2].to_s.delete(" "))
+      expect(subject.availability('37.323', '122.032').body).to eq(data_sets.values.to_s.delete(" "))
     end
   end
 
@@ -38,7 +38,7 @@ RSpec.describe Tenkit do
           'User-Agent'=>'Ruby'
         }).to_return(status: 200, body: TenkitMocks::Weather.all_data_sets, headers: {})
 
-      weather_response = subject.weather('37.323', '122.032', data_sets: data_sets.keys.map { |s| s.to_sym })
+      weather_response = subject.weather('37.323', '122.032', data_sets: data_sets.keys.map(&:to_sym))
       expect(weather_response).to be_a(Tenkit::WeatherResponse)
       expect(weather_response.raw).to be_a(HTTParty::Response)
       expect(weather_response.weather).to be_a(Tenkit::Weather)
