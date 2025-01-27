@@ -1,11 +1,11 @@
 require_relative "utils"
 
 module Tenkit
-  class Conditions
-    def initialize(conditions)
-      return if conditions.nil? || !conditions.is_a?(Hash)
+  class Container
+    def initialize(contents)
+      return if contents.nil? || !contents.is_a?(Hash)
 
-      conditions.each do |key, val|
+      contents.each do |key, val|
         name = Tenkit::Utils.snake(key)
         singleton_class.class_eval { attr_accessor name }
         if val.is_a?(Array)
@@ -14,7 +14,7 @@ module Tenkit
           elsif key == "hours"
             val.map { |e| HourWeatherConditions.new(e) }
           else
-            val.map { |e| Conditions.new(e) }
+            val.map { |e| Container.new(e) }
           end
         elsif val.is_a?(Hash)
           val = if key == "metadata"
@@ -26,7 +26,7 @@ module Tenkit
           elsif key == "restOfDayForecast"
             RestOfDayForecast.new(val)
           else
-            Conditions.new(val)
+            Container.new(val)
           end
         end
         instance_variable_set(:"@#{name}", val)
@@ -34,13 +34,13 @@ module Tenkit
     end
   end
 
-  CurrentWeather = Conditions
-  HourlyForecast = Conditions
-  DailyForecast = Conditions
-  HourWeatherConditions = Conditions
-  DayWeatherConditions = Conditions
-  Metadata = Conditions
-  DaytimeForecast = Conditions
-  OvernightForecast = Conditions
-  RestOfDayForecast = Conditions
+  CurrentWeather = Container
+  HourlyForecast = Container
+  DailyForecast = Container
+  HourWeatherConditions = Container
+  DayWeatherConditions = Container
+  Metadata = Container
+  DaytimeForecast = Container
+  OvernightForecast = Container
+  RestOfDayForecast = Container
 end
