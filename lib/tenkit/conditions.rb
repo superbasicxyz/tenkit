@@ -3,7 +3,7 @@ require_relative "utils"
 module Tenkit
   class Conditions
     def initialize(conditions)
-      return if conditions.nil?
+      return if conditions.nil? || !conditions.is_a?(Hash)
 
       conditions.each do |key, val|
         name = Tenkit::Utils.snake(key)
