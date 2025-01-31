@@ -8,7 +8,7 @@ RSpec.describe Tenkit::Utils do
     let(:complex) { "someAWSCredentials" }
     let(:mangled) { "some_aw_scredentials" }
 
-    it "converst to snake case" do
+    it "converts to snake case" do
       expect(subject.snake(simple)).to eq correct
     end
 
