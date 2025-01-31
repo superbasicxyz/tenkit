@@ -19,7 +19,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'httparty', '~> 0.21.0'
   s.add_dependency 'jwt', '~> 2.7.0'
 
-  s.add_development_dependency 'bundler', '~> 2.3.17'
+  s.add_development_dependency 'bundler', '~> 2.5.23'
   s.add_development_dependency 'dotenv', '~> 2.8'
   s.add_development_dependency 'rake', '~> 12.3'
   s.add_development_dependency 'rspec', '~> 3.0'
