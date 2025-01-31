@@ -43,12 +43,13 @@ GEM
       hashdiff (>= 0.4.0, < 2.0.0)
 
 PLATFORMS
+  arm64-darwin-20
   arm64-darwin-21
   arm64-darwin-22
   x86_64-linux
 
 DEPENDENCIES
-  bundler (~> 2.3.17)
+  bundler (~> 2.4.22)
   dotenv (~> 2.8)
   rake (~> 12.3)
   rspec (~> 3.0)
@@ -56,4 +57,4 @@ DEPENDENCIES
   webmock (~> 3.8)
 
 BUNDLED WITH
-   2.3.17
+   2.4.22
