@@ -14,9 +14,9 @@ module Tenkit
       current_weather: 'currentWeather',
       forecast_daily: 'forecastDaily',
       forecast_hourly: 'forecastHourly',
+      forecast_next_hour: 'forecastNextHour',
       trend_comparison: 'trendComparison',
-      weather_alerts: 'weatherAlerts',
-      forecast_next_hour: 'forecastNextHour'
+      weather_alerts: 'weatherAlerts'
     }.freeze
 
     def initialize

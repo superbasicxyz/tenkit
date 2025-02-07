@@ -1,7 +1,7 @@
 module TenkitMocks
   module Availability
     def self.all_data_sets
-      '["currentWeather","forecastDaily","forecastHourly","trendComparison","weatherAlerts"]'
+      '["currentWeather","forecastDaily","forecastHourly","forecastNextHour","trendComparison","weatherAlerts"]'
     end
   end
 

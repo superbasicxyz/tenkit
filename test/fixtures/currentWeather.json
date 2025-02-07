@@ -1,0 +1,35 @@
+{
+  "currentWeather": {
+    "name": "CurrentWeather",
+    "metadata": {
+      "attributionURL": "https://developer.apple.com/weatherkit/data-source-attribution/",
+      "expireTime": "2025-01-12T20:28:17Z",
+      "latitude": 37.32,
+      "longitude": 122.03,
+      "readTime": "2025-01-12T20:23:17Z",
+      "reportedTime": "2025-01-12T20:23:17Z",
+      "units": "m",
+      "version": 1,
+      "sourceType": "modeled"
+    },
+    "asOf": "2025-01-12T20:23:17Z",
+    "cloudCover": 0.47,
+    "cloudCoverLowAltPct": 0.02,
+    "cloudCoverMidAltPct": 0.53,
+    "cloudCoverHighAltPct": 0,
+    "conditionCode": "PartlyCloudy",
+    "daylight": false,
+    "humidity": 0.78,
+    "precipitationIntensity": 0,
+    "pressure": 1024.97,
+    "pressureTrend": "falling",
+    "temperature": -5.68,
+    "temperatureApparent": -6.88,
+    "temperatureDewPoint": -8.91,
+    "uvIndex": 0,
+    "visibility": 23608.21,
+    "windDirection": 183,
+    "windGust": 13.51,
+    "windSpeed": 6.82
+  }
+}

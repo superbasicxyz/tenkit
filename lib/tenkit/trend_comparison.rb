@@ -1,3 +1,3 @@
 module Tenkit
-  class TrendComparison; end
+  class TrendComparison < Container; end
 end
