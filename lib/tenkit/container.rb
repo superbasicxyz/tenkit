@@ -34,13 +34,21 @@ module Tenkit
     end
   end
 
-  CurrentWeather = Container
-  HourlyForecast = Container
-  DailyForecast = Container
-  HourWeatherConditions = Container
-  DayWeatherConditions = Container
-  Metadata = Container
-  DaytimeForecast = Container
-  OvernightForecast = Container
-  RestOfDayForecast = Container
+  class CurrentWeather < Container; end
+
+  class HourlyForecast < Container; end
+
+  class DailyForecast < Container; end
+
+  class HourWeatherConditions < Container; end
+
+  class DayWeatherConditions < Container; end
+
+  class Metadata < Container; end
+
+  class DaytimeForecast < Container; end
+
+  class OvernightForecast < Container; end
+
+  class RestOfDayForecast < Container; end
 end
