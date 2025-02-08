@@ -4,6 +4,18 @@ require_relative './mock/weather'
 RSpec.describe Tenkit do
   let(:api_url) { "https://weatherkit.apple.com/api/v1"  }
   let(:data_sets) { Tenkit::Client::DATA_SETS }
+  let(:pkey) do
+    <<~PKEY
+    -----BEGIN PRIVATE KEY-----
+    MIGTAgEAMBMGByqGSM49AgEGCCqGSM49AwEHBHkwdwIBAQQgvDhFoOhIgO3j/1KT
+    D/tGcxdMK9ILbIPv63GO4IlkrMagCgYIKoZIzj0DAQehRANCAAQGjZk+nabnYj16
+    7wADUWYq4xFQ4tAKfNmjPTHQm0YGV/eUhfEsVgtV0N8jR3baRuHMFlEbAyyiN46G
+    efTzbRg+
+    -----END PRIVATE KEY-----
+    PKEY
+  end
+
+  before {Tenkit.configure {|c| c.key = pkey} }
 
   subject { Tenkit::Client.new }
 
