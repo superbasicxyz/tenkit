@@ -40,6 +40,8 @@ module Tenkit
 
   class DailyForecast < Container; end
 
+  class WeatherAlertSummary < Container; end
+
   class HourWeatherConditions < Container; end
 
   class DayWeatherConditions < Container; end
