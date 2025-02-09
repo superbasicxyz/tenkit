@@ -1,5 +1,3 @@
-require_relative './weather_alert_summary'
-
 module Tenkit
   class WeatherAlertCollection
     attr_reader :alerts, :details_url
