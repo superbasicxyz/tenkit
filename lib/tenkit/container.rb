@@ -13,6 +13,10 @@ module Tenkit
             val.map { |e| DayWeatherConditions.new(e) }
           elsif key == "hours"
             val.map { |e| HourWeatherConditions.new(e) }
+          elsif key == "features"
+            val.map { |e| Feature.new(e) }
+          elsif key == "messages"
+            val.map { |e| Message.new(e) }
           else
             val.map { |e| Container.new(e) }
           end
@@ -25,6 +29,10 @@ module Tenkit
             OvernightForecast.new(val)
           elsif key == "restOfDayForecast"
             RestOfDayForecast.new(val)
+          elsif key == "area"
+            Area.new(val)
+          elsif key == "geometry"
+            Geometry.new(val)
           else
             Container.new(val)
           end
@@ -44,6 +52,10 @@ module Tenkit
 
   class HourWeatherConditions < Container; end
 
+  class Feature < Container; end
+
+  class Message < Container; end
+
   class DayWeatherConditions < Container; end
 
   class Metadata < Container; end
@@ -53,4 +65,8 @@ module Tenkit
   class OvernightForecast < Container; end
 
   class RestOfDayForecast < Container; end
+
+  class Area < Container; end
+
+  class Geometry < Container; end
 end
