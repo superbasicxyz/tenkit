@@ -3,7 +3,7 @@ require_relative "utils"
 module Tenkit
   class Container
     def initialize(contents)
-      return if contents.nil? || !contents.is_a?(Hash)
+      return contents if !contents.is_a?(Hash)
 
       contents.each do |key, val|
         name = Tenkit::Utils.snake(key)
@@ -17,6 +17,8 @@ module Tenkit
             val.map { |e| Feature.new(e) }
           elsif key == "messages"
             val.map { |e| Message.new(e) }
+          elsif key == "coordinates"
+            Coordinates.new(val)
           else
             val.map { |e| Container.new(e) }
           end
@@ -55,6 +57,8 @@ module Tenkit
   class Feature < Container; end
 
   class Message < Container; end
+
+  class Coordinates < Array; end
 
   class DayWeatherConditions < Container; end
 

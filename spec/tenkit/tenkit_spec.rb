@@ -21,14 +21,13 @@ RSpec.describe Tenkit do
   end
 
   context "when properly configured" do
-    let(:accept) { "gzip;q=1.0,deflate;q=0.6,identity;q=0.3" }
-    let(:headers) { {Accept: "*/*", "Accept-Encoding": accept, Authorization: /Bearer /, "User-Agent": "Ruby"} }
+    let(:headers) { {Accept: "*/*", "Accept-Encoding": /gzip/, Authorization: /Bearer/, "User-Agent": "Ruby"} }
 
     before { stub_request(:get, url).with(headers: headers).to_return(status: 200, body: body, headers: {}) }
 
     describe "#availability" do
       let(:url) { "#{api_url}/availability/37.323/122.032?country=US" }
-      let(:body) { %w[currentWeather forecastDaily forecastHourly forecastNextHour trendComparison weatherAlerts].to_json }
+      let(:body) { data_sets.values.to_json }
 
       it "returns data sets available for specified location" do
         expect(subject.availability("37.323", "122.032").body).to eq(data_sets.values.to_s.delete(" "))
@@ -50,13 +49,32 @@ RSpec.describe Tenkit do
         expect(resp.weather.weather_alerts).to be_a(Tenkit::WeatherAlertCollection)
       end
 
-      context "with valid payload" do
-        let(:body) { all_weather_json }
+      context "with CurrentWeather payload" do
+        let(:body) { File.read("test/fixtures/currentWeather.json") }
 
-        it "contains expected payload objects" do
+        it "contains CurrentWeather payload objects" do
           expect(resp.weather.current_weather.name).to eq "CurrentWeather"
+          expect(resp.weather.current_weather.metadata).to be_a(Tenkit::Metadata)
+        end
+      end
+
+      context "with DailyForecast payload" do
+        let(:body) { File.read("test/fixtures/forecastDaily.json") }
+
+        it "contains DailyForecast payload objects" do
           expect(resp.weather.forecast_daily.name).to eq "DailyForecast"
+          expect(resp.weather.forecast_daily.metadata).to be_a(Tenkit::Metadata)
+          expect(resp.weather.forecast_daily.days.first).to be_a(Tenkit::DayWeatherConditions)
+        end
+      end
+
+      context "with HourlyForecast payload" do
+        let(:body) { File.read("test/fixtures/forecastHourly.json") }
+
+        it "contains HourlyForecast payload objects" do
           expect(resp.weather.forecast_hourly.name).to eq "HourlyForecast"
+          expect(resp.weather.forecast_hourly.metadata).to be_a(Tenkit::Metadata)
+          expect(resp.weather.forecast_hourly.hours.first).to be_a(Tenkit::HourWeatherConditions)
         end
       end
     end
@@ -83,13 +101,5 @@ RSpec.describe Tenkit do
         end
       end
     end
-  end
-
-  def all_weather_json
-    data = {}
-    %w[currentWeather forecastDaily forecastHourly].each do |set|
-      data.merge!(JSON.parse(File.read("test/fixtures/#{set}.json")))
-    end
-    data.to_json
   end
 end
