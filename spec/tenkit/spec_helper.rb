@@ -4,6 +4,7 @@ require 'webmock/rspec'
 require 'dotenv'
 Dotenv.load
 
+# REMOVE ONCE PROPER PKEY SET IN BUILD ENVIRONMENT
 ENV['AUTH_KEY'] = <<~PKEY
   -----BEGIN PRIVATE KEY-----
   MIGTAgEAMBMGByqGSM49AgEGCCqGSM49AwEHBHkwdwIBAQQgvDhFoOhIgO3j/1KT
