@@ -25,6 +25,7 @@ RSpec.describe Tenkit do
     let(:lon) { 122.032 }
 
     before do
+      allow(client).to receive(:token) # Github build environment may have invalid ENV['AUTH_KEY']
       stub_request(:get, url).with(headers: headers).to_return(status: 200, body: body, headers: {})
     end
 
