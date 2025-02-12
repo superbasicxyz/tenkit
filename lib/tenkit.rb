@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative 'tenkit/container'
+require_relative 'tenkit/authentication'
 require_relative 'tenkit/client'
 require_relative 'tenkit/config'
 require_relative 'tenkit/version'
