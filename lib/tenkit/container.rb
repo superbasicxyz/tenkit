@@ -3,7 +3,7 @@ require_relative "utils"
 module Tenkit
   class Container
     def initialize(contents)
-      return if contents.nil? || !contents.is_a?(Hash)
+      return unless contents.is_a?(Hash)
 
       contents.each do |key, val|
         name = Tenkit::Utils.snake(key)
@@ -13,6 +13,12 @@ module Tenkit
             val.map { |e| DayWeatherConditions.new(e) }
           elsif key == "hours"
             val.map { |e| HourWeatherConditions.new(e) }
+          elsif key == "features"
+            val.map { |e| Feature.new(e) }
+          elsif key == "messages"
+            val.map { |e| Message.new(e) }
+          elsif key == "coordinates"
+            Coordinates.new(val)
           else
             val.map { |e| Container.new(e) }
           end
@@ -25,6 +31,10 @@ module Tenkit
             OvernightForecast.new(val)
           elsif key == "restOfDayForecast"
             RestOfDayForecast.new(val)
+          elsif key == "area"
+            Area.new(val)
+          elsif key == "geometry"
+            Geometry.new(val)
           else
             Container.new(val)
           end
@@ -40,7 +50,15 @@ module Tenkit
 
   class DailyForecast < Container; end
 
+  class WeatherAlertSummary < Container; end
+
   class HourWeatherConditions < Container; end
+
+  class Feature < Container; end
+
+  class Message < Container; end
+
+  class Coordinates < Array; end
 
   class DayWeatherConditions < Container; end
 
@@ -51,4 +69,8 @@ module Tenkit
   class OvernightForecast < Container; end
 
   class RestOfDayForecast < Container; end
+
+  class Area < Container; end
+
+  class Geometry < Container; end
 end

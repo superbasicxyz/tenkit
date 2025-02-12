@@ -1,52 +1,115 @@
-require_relative './spec_helper'
-require_relative './mock/weather'
+require_relative "spec_helper"
 
 RSpec.describe Tenkit do
-  let(:api_url) { "https://weatherkit.apple.com/api/v1"  }
+  let(:api_url) { "https://weatherkit.apple.com/api/v1" }
   let(:data_sets) { Tenkit::Client::DATA_SETS }
+  let(:tid) { ENV.fetch("TID", "9876543210") }
+  let(:body) { "{}" }
 
-  subject { Tenkit::Client.new }
+  before { Tenkit.config.team_id = tid }
 
-  describe '#initialize' do
-    it 'raises a TenkitError if not configured fully' do
-      Tenkit.config.team_id = nil
-      expect { Tenkit::Client.new }.to raise_error Tenkit::TenkitError
-      Tenkit.config.team_id = ENV.fetch('TID')
+  context "when improperly configured" do
+    let(:tid) { nil }
+
+    describe "#initialize" do
+      it "raises a TenkitError" do
+        expect { Tenkit::Client.new }.to raise_error Tenkit::TenkitError
+      end
     end
   end
 
-  describe '#availability' do
-    it 'returns the data sets available for specified location' do
-      stub_request(:get, "#{api_url}/availability/37.323/122.032?country=US").with(
-        headers: {
-          'Accept'=>'*/*',
-          'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-          'Authorization'=> /Bearer /,
-          'User-Agent'=>'Ruby'
-        }).to_return(status: 200, body: TenkitMocks::Availability.all_data_sets, headers: {})
-      expect(subject.availability('37.323', '122.032').body).to eq(data_sets.values.to_s.delete(" "))
+  context "when properly configured" do
+    let(:headers) { {Accept: "*/*", "Accept-Encoding": /gzip/, Authorization: /Bearer/, "User-Agent": "Ruby"} }
+    let(:client) { Tenkit::Client.new }
+    let(:lat) { 37.323 }
+    let(:lon) { 122.032 }
+
+    before do
+      allow(client).to receive(:token) # Github build environment may have invalid ENV['AUTH_KEY']
+      stub_request(:get, url).with(headers: headers).to_return(status: 200, body: body, headers: {})
     end
-  end
 
-  describe '#weather' do
-    it 'returns weather data for the specified location' do
-      stub_request(:get, "#{api_url}/weather/en/37.323/122.032?dataSets=#{data_sets.values.join(",")}").with(
-        headers: {
-          'Accept'=>'*/*',
-          'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-          'Authorization'=> /Bearer /,
-          'User-Agent'=>'Ruby'
-        }).to_return(status: 200, body: TenkitMocks::Weather.all_data_sets, headers: {})
+    describe "#availability" do
+      let(:url) { "#{api_url}/availability/#{lat}/#{lon}?country=US" }
+      let(:body) { data_sets.values.to_json }
 
-      weather_response = subject.weather('37.323', '122.032', data_sets: data_sets.keys.map(&:to_sym))
-      expect(weather_response).to be_a(Tenkit::WeatherResponse)
-      expect(weather_response.raw).to be_a(HTTParty::Response)
-      expect(weather_response.weather).to be_a(Tenkit::Weather)
-      expect(weather_response.weather.current_weather).to be_a(Tenkit::CurrentWeather)
-      expect(weather_response.weather.forecast_daily).to be_a(Tenkit::DailyForecast)
-      expect(weather_response.weather.forecast_hourly).to be_a(Tenkit::HourlyForecast)
-      expect(weather_response.weather.forecast_next_hour).to be_a(Tenkit::NextHourForecast)
-      expect(weather_response.weather.weather_alerts).to be_a(Tenkit::WeatherAlertCollection)
+      subject { client.availability(lat, lon).body }
+
+      it "returns data sets available for specified location" do
+        expect(subject).to eq(data_sets.values.to_s.delete(" "))
+      end
+    end
+
+    describe "#weather" do
+      let(:url) { "#{api_url}/weather/en/#{lat}/#{lon}?dataSets=#{data_sets.values.join(",")}" }
+
+      subject { client.weather(lat, lon, data_sets: data_sets.keys.map(&:to_sym)) }
+
+      it "contains expected base objects" do
+        expect(subject).to be_a(Tenkit::WeatherResponse)
+        expect(subject.raw).to be_a(HTTParty::Response)
+        expect(subject.weather).to be_a(Tenkit::Weather)
+        expect(subject.weather.current_weather).to be_a(Tenkit::CurrentWeather)
+        expect(subject.weather.forecast_daily).to be_a(Tenkit::DailyForecast)
+        expect(subject.weather.forecast_hourly).to be_a(Tenkit::HourlyForecast)
+        expect(subject.weather.forecast_next_hour).to be_a(Tenkit::NextHourForecast)
+        expect(subject.weather.weather_alerts).to be_a(Tenkit::WeatherAlertCollection)
+      end
+
+      context "with CurrentWeather payload" do
+        let(:body) { File.read("test/fixtures/currentWeather.json") }
+
+        it "contains CurrentWeather payload objects" do
+          expect(subject.weather.current_weather.name).to eq "CurrentWeather"
+          expect(subject.weather.current_weather.metadata).to be_a(Tenkit::Metadata)
+        end
+      end
+
+      context "with DailyForecast payload" do
+        let(:body) { File.read("test/fixtures/forecastDaily.json") }
+
+        it "contains DailyForecast payload objects" do
+          expect(subject.weather.forecast_daily.name).to eq "DailyForecast"
+          expect(subject.weather.forecast_daily.metadata).to be_a(Tenkit::Metadata)
+          expect(subject.weather.forecast_daily.days.first).to be_a(Tenkit::DayWeatherConditions)
+        end
+      end
+
+      context "with HourlyForecast payload" do
+        let(:body) { File.read("test/fixtures/forecastHourly.json") }
+
+        it "contains HourlyForecast payload objects" do
+          expect(subject.weather.forecast_hourly.name).to eq "HourlyForecast"
+          expect(subject.weather.forecast_hourly.metadata).to be_a(Tenkit::Metadata)
+          expect(subject.weather.forecast_hourly.hours.first).to be_a(Tenkit::HourWeatherConditions)
+        end
+      end
+    end
+
+    describe "#weather_alert" do
+      let(:alert_id) { "0828b382-f63c-4139-9f4f-91a05a4c7cdd" }
+      let(:url) { "#{api_url}/weatherAlert/en/#{alert_id}" }
+
+      subject { client.weather_alert(alert_id) }
+
+      it "contains expected base objects" do
+        expect(subject).to be_a(Tenkit::WeatherAlertResponse)
+        expect(subject.raw).to be_a(HTTParty::Response)
+        expect(subject.weather_alert).to be_a(Tenkit::WeatherAlert)
+        expect(subject.weather_alert.summary).to be_a(Tenkit::WeatherAlertSummary)
+      end
+
+      context "with WeatherAlert payload" do
+        let(:body) { File.read("test/fixtures/alert.json") }
+
+        it "contains expected payload objects" do
+          expect(subject.weather_alert.summary.name).to eq "WeatherAlert"
+          expect(subject.weather_alert.summary.messages.first).to be_a Tenkit::Message
+          expect(subject.weather_alert.summary.area).to be_a Tenkit::Area
+          expect(subject.weather_alert.summary.area.features.first).to be_a Tenkit::Feature
+          expect(subject.weather_alert.summary.area.features.first.geometry).to be_a Tenkit::Geometry
+        end
+      end
     end
   end
 end
