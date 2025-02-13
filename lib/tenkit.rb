@@ -1,12 +1,12 @@
 # frozen_string_literal: true
 
-require_relative 'tenkit/container'
-require_relative 'tenkit/client'
-require_relative 'tenkit/config'
-require_relative 'tenkit/version'
-require_relative 'tenkit/weather'
-require_relative 'tenkit/weather_alert'
-require_relative 'tenkit/tenkit_error'
+require_relative "tenkit/container"
+require_relative "tenkit/client"
+require_relative "tenkit/config"
+require_relative "tenkit/version"
+require_relative "tenkit/weather"
+require_relative "tenkit/weather_alert"
+require_relative "tenkit/tenkit_error"
 
 module Tenkit
   class << self

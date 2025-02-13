@@ -14,7 +14,7 @@ module Tenkit
     def validate!
       missing_required = REQUIRED_ATTRIBUTES.filter { |required| instance_variable_get(required).nil? }
       if missing_required.length > 0
-        raise TenkitError, "#{missing_required.join(', ')} cannot be blank. check that you have configured your credentials"
+        raise TenkitError, "#{missing_required.join(", ")} cannot be blank. check that you have configured your credentials"
       end
     end
   end

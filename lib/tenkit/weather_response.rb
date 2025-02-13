@@ -1,4 +1,4 @@
-require_relative './response'
+require_relative "response"
 
 module Tenkit
   class WeatherResponse < Response
