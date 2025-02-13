@@ -16,7 +16,7 @@ RSpec.describe Tenkit::Weather do
 
     it "includes expected metadata" do
       expect(subject.name).to eq "CurrentWeather"
-      expect(subject.metadata.attribution_url).to start_with 'https://'
+      expect(subject.metadata.attribution_url).to start_with "https://"
       expect(subject.metadata.latitude).to be 37.32
       expect(subject.metadata.longitude).to be 122.03
     end
@@ -51,12 +51,12 @@ RSpec.describe Tenkit::Weather do
     end
 
     it "excludes learn_more_url node" do
-      expect(subject.respond_to? :learn_more_url).to be false
+      expect(subject.respond_to?(:learn_more_url)).to be false
     end
 
     it "includes expected metadata" do
       expect(subject.name).to eq "DailyForecast"
-      expect(subject.metadata.attribution_url).to start_with 'https://'
+      expect(subject.metadata.attribution_url).to start_with "https://"
       expect(subject.metadata.latitude).to be 37.32
       expect(subject.metadata.longitude).to be 122.03
     end
@@ -88,7 +88,7 @@ RSpec.describe Tenkit::Weather do
 
     it "includes expected metadata" do
       expect(subject.name).to eq "HourlyForecast"
-      expect(subject.metadata.attribution_url).to start_with 'https://'
+      expect(subject.metadata.attribution_url).to start_with "https://"
       expect(subject.metadata.latitude).to be 37.32
       expect(subject.metadata.longitude).to be 122.03
     end
