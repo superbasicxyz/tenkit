@@ -53,11 +53,7 @@ module Tenkit
     def get(url, query: nil)
       headers = { Authorization: "Bearer #{token}" }
       params = { headers: headers }
-
-      if !query.nil?
-        params[:query] = query
-      end
-
+      params[:query] = query unless query.nil?
       self.class.get(url, params)
     end
 

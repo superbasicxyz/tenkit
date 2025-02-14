@@ -5,39 +5,56 @@ RSpec.describe Tenkit::Weather do
   let(:lon) { 122.03 }
   let(:path) { "/weather/en/#{lat}/#{lon}" }
   let(:data_sets) { [Tenkit::Utils.snake(data_set).to_sym] }
-  let(:query) { {query: {dataSets: data_set}} }
-
+  let(:params) { {dataSets: data_set} }
+  let(:query) { {query: params} }
   let(:client) { Tenkit::Client.new }
   let(:api_response) { double("WeatherResponse", body: json) }
   let(:json) { File.read("test/fixtures/#{data_set}.json") }
 
-  before { allow(client).to receive(:get).and_return(api_response) }
+  before { expect(client).to receive(:get).with(path, query).and_return(api_response) }
 
   describe "currentWeather" do
     let(:data_set) { "currentWeather" }
 
-    subject { client.weather(lat, lon, data_sets: data_sets).weather.current_weather }
+    context "with options" do
+      let(:fmt) { "%FT%TZ" }
+      let(:now) { Time.now }
+      let(:options) do
+        {country_code: "US",
+         current_as_of: now.strftime(fmt),
+         daily_end: (now + 12 * 3600).strftime(fmt),
+         daily_start: (now - 12 * 3600).strftime(fmt),
+         data_sets: data_sets,
+         hourly_end: (now + 6 * 3600).strftime(fmt),
+         hourly_start: (now - 6 * 3600).strftime(fmt),
+         timezone: "PST"}
+      end
+      let(:params) do
+        options.map {|k,v| [Tenkit::Utils.camel(k.to_s).to_sym, (k == :data_sets) ? data_set : v]}.to_h
+      end
 
-    it "returns response from correct data_sets" do
-      subject
-      expect(client).to have_received(:get).with(path, query)
-    end
+      subject { client.weather(lat, lon, **options).weather.current_weather }
 
-    it "includes expected metadata" do
-      expect(subject.name).to eq "CurrentWeather"
-      expect(subject.metadata.attribution_url).to start_with 'https://'
-      expect(subject.metadata.latitude).to be 37.32
-      expect(subject.metadata.longitude).to be 122.03
-    end
+      it "returns response from correct data_sets" do
+        subject
+      end
 
-    it "returns correct object types" do
-      expect(subject).to be_a Tenkit::CurrentWeather
-      expect(subject.metadata).to be_a Tenkit::Metadata
-    end
+      it "includes expected metadata" do
+        expect(subject.name).to eq "CurrentWeather"
+        expect(subject.metadata.attribution_url).to start_with "https://"
+        expect(subject.metadata.latitude).to be 37.32
+        expect(subject.metadata.longitude).to be 122.03
+      end
 
-    it "returns current weather data" do
-      expect(subject.temperature).to be(-5.68)
-      expect(subject.temperature_apparent).to be(-6.88)
+      it "returns correct object types" do
+        expect(subject).to be_a Tenkit::CurrentWeather
+        expect(subject.metadata).to be_a Tenkit::Metadata
+      end
+
+      it "returns current weather data" do
+        expect(subject.temperature).to be(-5.68)
+        expect(subject.temperature_apparent).to be(-6.88)
+      end
     end
 
     context "without options" do
@@ -45,7 +62,6 @@ RSpec.describe Tenkit::Weather do
 
       it "returns response from default currentWeather data set" do
         expect(subject.name).to eq "CurrentWeather"
-        expect(client).to have_received(:get).with(path, query)
       end
     end
   end
@@ -58,7 +74,6 @@ RSpec.describe Tenkit::Weather do
 
     it "returns 10 days of data from correct data sets" do
       expect(subject.days.size).to be 10
-      expect(client).to have_received(:get).with(path, query)
     end
 
     it "returns correct object types" do
@@ -103,7 +118,6 @@ RSpec.describe Tenkit::Weather do
 
     it "returns 25 hours of data from correct data sets" do
       expect(subject.hours.size).to be 25
-      expect(client).to have_received(:get).with(path, query)
     end
 
     it "includes expected metadata" do
