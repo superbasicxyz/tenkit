@@ -24,14 +24,21 @@ module Tenkit
       Tenkit.config.validate!
     end
 
-    def availability(lat, lon, country: 'US')
-      get("/availability/#{lat}/#{lon}?country=#{country}")
+    def availability(lat, lon, **options)
+      options[:country] ||= 'US'
+
+      query = { country: options[:country] }
+      get("/availability/#{lat}/#{lon}", query: query)
     end
 
-    def weather(lat, lon, data_sets: [:current_weather], language: 'en')
-      path_root = "/weather/#{language}/#{lat}/#{lon}?dataSets="
-      path = path_root + data_sets.map { |ds| DATA_SETS[ds] }.compact.join(',')
-      response = get(path)
+    def weather(lat, lon, **options)
+      options[:data_sets] ||= [:current_weather]
+      options[:language] ||= 'en'
+
+      query = weather_query_for_options(options)
+      path = "/weather/#{options[:language]}/#{lat}/#{lon}"
+
+      response = get(path, query: query)
       WeatherResponse.new(response)
     end
 
@@ -43,9 +50,11 @@ module Tenkit
 
     private
 
-    def get(url)
+    def get(url, query: nil)
       headers = { Authorization: "Bearer #{token}" }
-      self.class.get(url, { headers: headers })
+      params = { headers: headers }
+      params[:query] = query unless query.nil?
+      self.class.get(url, params)
     end
 
     def header
@@ -71,6 +80,23 @@ module Tenkit
 
     def token
       JWT.encode payload, key, 'ES256', header
+    end
+
+    # Snake case options to expected query parameters
+    # https://developer.apple.com/documentation/weatherkitrestapi/get-api-v1-weather-_language_-_latitude_-_longitude_#query-parameters
+    def weather_query_for_options(options)
+      data_sets_param = options[:data_sets].map { |ds| DATA_SETS[ds] }.compact.join(',')
+
+      {
+        countryCode: options[:country_code],
+        currentAsOf: options[:current_as_of],
+        dailyEnd: options[:daily_end],
+        dailyStart: options[:daily_start],
+        dataSets: data_sets_param,
+        hourlyEnd: options[:hourly_end],
+        hourlyStart: options[:hourly_start],
+        timezone: options[:timezone]
+      }.compact
     end
   end
 end
