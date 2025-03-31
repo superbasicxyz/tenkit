@@ -3,6 +3,10 @@ require_relative "../spec_helper"
 RSpec.describe Tenkit::Weather do
   let(:lat) { 37.32 }
   let(:lon) { 122.03 }
+  let(:path) { "/weather/en/#{lat}/#{lon}" }
+  let(:data_sets) { [Tenkit::Utils.snake(data_set).to_sym] }
+  let(:query) { {query: {dataSets: data_set}} }
+
   let(:client) { Tenkit::Client.new }
   let(:api_response) { double("WeatherResponse", body: json) }
   let(:json) { File.read("test/fixtures/#{data_set}.json") }
@@ -12,7 +16,12 @@ RSpec.describe Tenkit::Weather do
   describe "currentWeather" do
     let(:data_set) { "currentWeather" }
 
-    subject { client.weather(lat, lon).weather.current_weather }
+    subject { client.weather(lat, lon, data_sets: data_sets).weather.current_weather }
+
+    it "returns response from correct data_sets" do
+      subject
+      expect(client).to have_received(:get).with(path, query)
+    end
 
     it "includes expected metadata" do
       expect(subject.name).to eq "CurrentWeather"
@@ -30,16 +39,26 @@ RSpec.describe Tenkit::Weather do
       expect(subject.temperature).to be(-5.68)
       expect(subject.temperature_apparent).to be(-6.88)
     end
+
+    context "without options" do
+      subject { client.weather(lat, lon).weather.current_weather }
+
+      it "returns response from default currentWeather data set" do
+        expect(subject.name).to eq "CurrentWeather"
+        expect(client).to have_received(:get).with(path, query)
+      end
+    end
   end
 
   describe "forecastDaily" do
     let(:data_set) { "forecastDaily" }
     let(:first_day) { subject.days.first }
 
-    subject { client.weather(lat, lon).weather.forecast_daily }
+    subject { client.weather(lat, lon, data_sets: data_sets).weather.forecast_daily }
 
-    it "returns 10 days of data" do
+    it "returns 10 days of data from correct data sets" do
       expect(subject.days.size).to be 10
+      expect(client).to have_received(:get).with(path, query)
     end
 
     it "returns correct object types" do
@@ -80,10 +99,11 @@ RSpec.describe Tenkit::Weather do
     let(:data_set) { "forecastHourly" }
     let(:first_hour) { subject.hours.first }
 
-    subject { client.weather(lat, lon).weather.forecast_hourly }
+    subject { client.weather(lat, lon, data_sets: data_sets).weather.forecast_hourly }
 
-    it "returns 25 hours of data" do
+    it "returns 25 hours of data from correct data sets" do
       expect(subject.hours.size).to be 25
+      expect(client).to have_received(:get).with(path, query)
     end
 
     it "includes expected metadata" do
